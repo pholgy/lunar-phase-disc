@@ -1,0 +1,284 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px 40px;
+  background: radial-gradient(ellipse at 50% 30%, #0f1b3d 0%, #060a1a 70%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background stars */
+.app::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 30% 10%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1.5px 1.5px at 50% 50%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 70% 30%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 20% 80%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1.5px 1.5px at 60% 90%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 80% 15%, rgba(255,255,255,0.4), transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app > * {
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.title h1 {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.title h2 {
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 2px;
+}
+
+/* Disc container */
+.disc-container {
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 1;
+  position: relative;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+
+.disc-container:active {
+  cursor: grabbing;
+}
+
+.disc-container svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Moon ring rotation transition */
+.moon-ring {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.moon-ring.dragging {
+  transition: none;
+}
+
+/* Day number text on disc */
+.day-number {
+  font-size: 14px;
+  font-weight: 500;
+  fill: rgba(255, 255, 255, 0.7);
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+.day-number.selected {
+  fill: #4a9eff;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* Clock hour numbers */
+.clock-hour {
+  font-size: 14px;
+  font-weight: 400;
+  fill: #333;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* Moon click targets */
+.moon-group {
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.moon-group:hover {
+  opacity: 1 !important;
+}
+
+/* Info panel */
+.info-panel {
+  text-align: center;
+  margin-top: 20px;
+  padding: 16px 32px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  min-width: 280px;
+}
+
+.info-phase {
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.info-phase-en {
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.45);
+  margin-top: 2px;
+}
+
+.info-moonrise {
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.info-moonrise .time {
+  font-weight: 500;
+  color: #7bb8ff;
+  font-size: 1.1em;
+}
+
+/* Toggle */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 30px;
+  padding: 4px;
+}
+
+.toggle-btn {
+  padding: 10px 28px;
+  border-radius: 26px;
+  border: none;
+  cursor: pointer;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  font-family: 'Kanit', sans-serif;
+  font-weight: 400;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+}
+
+.toggle-btn.active {
+  background: linear-gradient(135deg, #1a3a6e, #2a5298);
+  color: white;
+  box-shadow: 0 0 24px rgba(42, 82, 152, 0.4);
+}
+
+.toggle-btn:not(.active):hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Today badge */
+.today-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #4a9eff;
+  border: 1px solid rgba(74, 158, 255, 0.3);
+  border-radius: 8px;
+  padding: 2px 8px;
+  margin-top: 6px;
+  letter-spacing: 0.05em;
+}
+
+/* Day selector (small buttons) */
+.day-selector {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 14px;
+  max-width: 360px;
+}
+
+.day-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'Kanit', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.day-btn:hover {
+  border-color: rgba(74, 158, 255, 0.4);
+  color: white;
+}
+
+.day-btn.active {
+  background: linear-gradient(135deg, #1a3a6e, #2a5298);
+  border-color: #4a9eff;
+  color: white;
+  box-shadow: 0 0 12px rgba(74, 158, 255, 0.3);
+}
+
+/* Animations */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(74, 158, 255, 0.4)); }
+  50% { filter: drop-shadow(0 0 14px rgba(74, 158, 255, 0.7)); }
+}
+
+.selected-moon-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .app {
+    padding: 12px 8px 32px;
+  }
+  .disc-container {
+    max-width: 360px;
+  }
+  .info-panel {
+    padding: 12px 20px;
+    min-width: 240px;
+  }
+  .toggle-btn {
+    padding: 8px 20px;
+  }
+  .day-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+  }
+}
