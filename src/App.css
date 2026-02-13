@@ -9,7 +9,6 @@
   overflow: hidden;
 }
 
-/* Background stars */
 .app::before {
   content: '';
   position: fixed;
@@ -27,16 +26,10 @@
   z-index: 0;
 }
 
-.app > * {
-  position: relative;
-  z-index: 1;
-}
+.app > * { position: relative; z-index: 1; }
 
-.title {
-  text-align: center;
-  margin-bottom: 16px;
-}
-
+/* Title */
+.title { text-align: center; margin-bottom: 8px; }
 .title h1 {
   font-size: clamp(1.4rem, 4vw, 2rem);
   font-weight: 300;
@@ -44,12 +37,71 @@
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.9);
 }
-
 .title h2 {
   font-size: clamp(1rem, 3vw, 1.4rem);
   font-weight: 300;
   color: rgba(255, 255, 255, 0.5);
   margin-top: 2px;
+}
+
+/* Controls Row */
+.controls-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.date-input {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  color: white;
+  padding: 7px 14px;
+  font-family: 'Kanit', sans-serif;
+  font-size: 0.85rem;
+  color-scheme: dark;
+  outline: none;
+  transition: border-color 0.25s;
+}
+.date-input:focus { border-color: rgba(74,158,255,0.4); }
+
+.ctrl-btn {
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.7);
+  font-family: 'Kanit', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+.ctrl-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(74,158,255,0.3);
+  color: white;
+}
+
+.anim-btn { padding: 7px 10px; }
+.anim-btn.active {
+  background: rgba(74,158,255,0.2);
+  border-color: rgba(74,158,255,0.5);
+  color: #7bb8ff;
+}
+
+/* Date display */
+.date-display {
+  font-size: clamp(0.8rem, 2vw, 0.95rem);
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 8px;
+  text-align: center;
 }
 
 /* Disc container */
@@ -63,71 +115,49 @@
   -webkit-user-select: none;
   cursor: grab;
 }
+.disc-container:active { cursor: grabbing; }
+.disc-container svg { width: 100%; height: 100%; display: block; }
 
-.disc-container:active {
-  cursor: grabbing;
-}
+/* Moon ring rotation */
+.moon-ring { transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.moon-ring.dragging { transition: none; }
+.moon-ring.animating { transition: transform 0.35s ease; }
 
-.disc-container svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-/* Moon ring rotation transition */
-.moon-ring {
-  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.moon-ring.dragging {
-  transition: none;
-}
-
-/* Day number text on disc */
+/* Day numbers */
 .day-number {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 14px; font-weight: 500;
   fill: rgba(255, 255, 255, 0.7);
-  text-anchor: middle;
-  dominant-baseline: central;
+  text-anchor: middle; dominant-baseline: central;
   pointer-events: none;
 }
+.day-number.selected { fill: #4a9eff; font-weight: 600; font-size: 16px; }
+.day-number.wan-phra-day { fill: #FFD700; }
+.day-number.selected.wan-phra-day { fill: #FFD700; font-size: 16px; }
 
-.day-number.selected {
-  fill: #4a9eff;
-  font-weight: 600;
-  font-size: 16px;
-}
-
-/* Clock hour numbers */
+/* Clock */
 .clock-hour {
-  font-size: 14px;
-  font-weight: 400;
-  fill: #333;
-  text-anchor: middle;
-  dominant-baseline: central;
+  font-size: 14px; font-weight: 400;
+  fill: #333; text-anchor: middle; dominant-baseline: central;
 }
 
 /* Moon click targets */
-.moon-group {
-  cursor: pointer;
-  transition: opacity 0.3s;
-}
-
-.moon-group:hover {
-  opacity: 1 !important;
-}
+.moon-group { cursor: pointer; transition: opacity 0.3s; }
+.moon-group:hover { opacity: 1 !important; }
 
 /* Info panel */
 .info-panel {
   text-align: center;
-  margin-top: 20px;
-  padding: 16px 32px;
+  margin-top: 16px;
+  padding: 14px 28px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   backdrop-filter: blur(10px);
   min-width: 280px;
+  transition: border-color 0.4s;
+}
+.info-panel.wan-phra-panel {
+  border-color: rgba(255, 215, 0, 0.25);
 }
 
 .info-phase {
@@ -135,14 +165,12 @@
   font-weight: 500;
   color: rgba(255, 255, 255, 0.9);
 }
-
 .info-phase-en {
   font-size: clamp(0.8rem, 2vw, 1rem);
   font-weight: 300;
   color: rgba(255, 255, 255, 0.45);
   margin-top: 2px;
 }
-
 .info-moonrise {
   font-size: clamp(0.9rem, 2.5vw, 1.1rem);
   font-weight: 300;
@@ -153,24 +181,43 @@
   justify-content: center;
   gap: 8px;
 }
+.info-moonrise .time { font-weight: 500; color: #7bb8ff; font-size: 1.1em; }
 
-.info-moonrise .time {
+/* วันพระ badge */
+.wan-phra-badge {
+  display: inline-block;
+  font-size: 0.8rem;
   font-weight: 500;
-  color: #7bb8ff;
-  font-size: 1.1em;
+  color: #FFD700;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 8px;
+  padding: 3px 12px;
+  margin-top: 8px;
+  background: rgba(255, 215, 0, 0.06);
+}
+
+.today-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #4a9eff;
+  border: 1px solid rgba(74, 158, 255, 0.3);
+  border-radius: 8px;
+  padding: 2px 8px;
+  margin-top: 6px;
+  letter-spacing: 0.05em;
 }
 
 /* Toggle */
 .toggle-container {
   display: flex;
   align-items: center;
-  margin-top: 16px;
+  margin-top: 14px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 30px;
   padding: 4px;
 }
-
 .toggle-btn {
   padding: 10px 28px;
   border-radius: 26px;
@@ -184,31 +231,14 @@
   color: rgba(255, 255, 255, 0.4);
   white-space: nowrap;
 }
-
 .toggle-btn.active {
   background: linear-gradient(135deg, #1a3a6e, #2a5298);
   color: white;
   box-shadow: 0 0 24px rgba(42, 82, 152, 0.4);
 }
+.toggle-btn:not(.active):hover { color: rgba(255, 255, 255, 0.7); }
 
-.toggle-btn:not(.active):hover {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-/* Today badge */
-.today-badge {
-  display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: #4a9eff;
-  border: 1px solid rgba(74, 158, 255, 0.3);
-  border-radius: 8px;
-  padding: 2px 8px;
-  margin-top: 6px;
-  letter-spacing: 0.05em;
-}
-
-/* Day selector (small buttons) */
+/* Day selector */
 .day-selector {
   display: flex;
   flex-wrap: wrap;
@@ -217,10 +247,8 @@
   margin-top: 14px;
   max-width: 360px;
 }
-
 .day-btn {
-  width: 36px;
-  height: 36px;
+  width: 36px; height: 36px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.03);
@@ -233,18 +261,161 @@
   align-items: center;
   justify-content: center;
 }
-
-.day-btn:hover {
-  border-color: rgba(74, 158, 255, 0.4);
-  color: white;
-}
-
+.day-btn:hover { border-color: rgba(74, 158, 255, 0.4); color: white; }
 .day-btn.active {
   background: linear-gradient(135deg, #1a3a6e, #2a5298);
   border-color: #4a9eff;
   color: white;
   box-shadow: 0 0 12px rgba(74, 158, 255, 0.3);
 }
+.day-btn.wan-phra {
+  border-color: rgba(255, 215, 0, 0.25);
+  color: rgba(255, 215, 0, 0.6);
+}
+.day-btn.wan-phra.active {
+  border-color: #FFD700;
+  background: linear-gradient(135deg, #5a4a00, #8a7a20);
+  color: #FFD700;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+}
+
+/* ============================================ */
+/* Monthly Calendar */
+/* ============================================ */
+
+.calendar {
+  width: 100%;
+  max-width: 380px;
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.cal-nav-btn {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.6);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.cal-nav-btn:hover {
+  background: rgba(255,255,255,0.08);
+  color: white;
+}
+
+.cal-month-label {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.7);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calendar-header {
+  text-align: center;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.35);
+  padding: 4px 0;
+}
+
+.calendar-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 2px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  min-height: 48px;
+}
+
+.calendar-day.empty { cursor: default; }
+
+.calendar-day:not(.empty):hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.calendar-day.selected {
+  background: rgba(74, 158, 255, 0.15);
+  border: 1px solid rgba(74, 158, 255, 0.35);
+}
+
+.calendar-day.today .cal-date-num {
+  color: #7bb8ff;
+  font-weight: 600;
+}
+
+.calendar-day.wan-phra .cal-date-num {
+  color: #FFD700;
+}
+
+.calendar-day.selected.wan-phra {
+  background: rgba(255, 215, 0, 0.1);
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+.cal-date-num {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.55);
+  margin-top: 1px;
+  line-height: 1;
+}
+
+.cal-wan-phra-dot {
+  position: absolute;
+  bottom: 2px;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: #FFD700;
+  opacity: 0.6;
+}
+
+/* Calendar legend */
+.calendar-legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.4);
+}
+
+.legend-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.wan-phra-dot { background: #FFD700; }
+.today-dot { background: #7bb8ff; }
 
 /* Animations */
 @keyframes twinkle {
@@ -252,33 +423,16 @@
   50% { opacity: 1; }
 }
 
-@keyframes pulse-glow {
-  0%, 100% { filter: drop-shadow(0 0 6px rgba(74, 158, 255, 0.4)); }
-  50% { filter: drop-shadow(0 0 14px rgba(74, 158, 255, 0.7)); }
-}
-
-.selected-moon-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
 /* Responsive */
 @media (max-width: 480px) {
-  .app {
-    padding: 12px 8px 32px;
-  }
-  .disc-container {
-    max-width: 360px;
-  }
-  .info-panel {
-    padding: 12px 20px;
-    min-width: 240px;
-  }
-  .toggle-btn {
-    padding: 8px 20px;
-  }
-  .day-btn {
-    width: 32px;
-    height: 32px;
-    font-size: 0.75rem;
-  }
+  .app { padding: 12px 8px 32px; }
+  .disc-container { max-width: 360px; }
+  .info-panel { padding: 12px 20px; min-width: 240px; }
+  .toggle-btn { padding: 8px 20px; }
+  .day-btn { width: 32px; height: 32px; font-size: 0.75rem; }
+  .controls-row { gap: 4px; }
+  .date-input { padding: 6px 10px; font-size: 0.8rem; }
+  .ctrl-btn { padding: 6px 10px; font-size: 0.8rem; }
+  .calendar { padding: 10px; }
+  .calendar-day { min-height: 42px; }
 }
