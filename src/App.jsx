@@ -32,13 +32,47 @@ function getLunarDayForDate(date) {
   return { phase: 'waning', day: Math.min(Math.floor(waningAge / half * 15) + 1, 15) };
 }
 
+// Customer's exact moonrise times from the physical disc
+const MOONRISE_TABLE = {
+  waxing: [
+    { hours: 6, minutes: 50 },  // day 1
+    { hours: 7, minutes: 35 },  // day 2
+    { hours: 8, minutes: 20 },  // day 3
+    { hours: 9, minutes: 5 },   // day 4
+    { hours: 9, minutes: 55 },  // day 5
+    { hours: 10, minutes: 40 }, // day 6
+    { hours: 11, minutes: 30 }, // day 7
+    { hours: 12, minutes: 15 }, // day 8
+    { hours: 13, minutes: 5 },  // day 9
+    { hours: 13, minutes: 55 }, // day 10
+    { hours: 14, minutes: 40 }, // day 11
+    { hours: 15, minutes: 30 }, // day 12
+    { hours: 16, minutes: 20 }, // day 13
+    { hours: 17, minutes: 10 }, // day 14
+    { hours: 18, minutes: 0 },  // day 15
+  ],
+  waning: [
+    { hours: 18, minutes: 40 }, // day 1
+    { hours: 19, minutes: 30 }, // day 2
+    { hours: 20, minutes: 20 }, // day 3
+    { hours: 21, minutes: 5 },  // day 4
+    { hours: 21, minutes: 55 }, // day 5
+    { hours: 22, minutes: 40 }, // day 6
+    { hours: 23, minutes: 30 }, // day 7
+    { hours: 0, minutes: 20 },  // day 8
+    { hours: 1, minutes: 5 },   // day 9
+    { hours: 1, minutes: 55 },  // day 10
+    { hours: 2, minutes: 45 },  // day 11
+    { hours: 3, minutes: 35 },  // day 12
+    { hours: 4, minutes: 20 },  // day 13
+    { hours: 5, minutes: 10 },  // day 14
+    { hours: 6, minutes: 0 },   // day 15
+  ],
+};
+
 function getMoonriseTime(phase, day) {
-  const step = (12 * 60) / 14;
-  let totalMin = phase === 'waxing'
-    ? 6 * 60 + (day - 1) * step
-    : 18 * 60 + (day - 1) * step;
-  totalMin = ((totalMin % 1440) + 1440) % 1440;
-  return { hours: Math.floor(totalMin / 60), minutes: Math.round(totalMin % 60) };
+  const clampedDay = Math.max(1, Math.min(15, day));
+  return MOONRISE_TABLE[phase][clampedDay - 1];
 }
 
 function getIllumination(phase, day) {
